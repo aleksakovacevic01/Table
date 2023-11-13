@@ -2,7 +2,7 @@ function create_table(data)     {
     let table = document.querySelector('table')
     table.innerHTML= ''
     let tr = document.createElement('tr')
-    const naslovi = ["id","name","description"];
+    const naslovi = ["id","name","description",];
     naslovi.forEach(naslov => {
         let th = document.createElement('th')
         th.innerHTML = naslov
@@ -19,8 +19,50 @@ function create_table(data)     {
             td.innerHTML = element[naslov]
             tr.appendChild(td)
         })  
+        let actions = document.createElement('td')
+        let remove = document.createElement('button')
+        remove.innerHTML = "x"
+        actions.appendChild(remove)
+        tr.appendChild(actions)
         table.appendChild(tr)
+        
+
+        remove.addEventListener("click", () => {
+            removeRow(element.id);
+        });
+        actions.appendChild(remove);
+        tr.appendChild(actions);
+        table.appendChild(tr);
     });
+
+    
+
+    
+    function removeRow(id) {
+        let rowToRemove = document.querySelector(`tr[data-id="${id}"]`);
+        if (rowToRemove) {
+            rowToRemove.remove();
+        }
+
+        
+        removeObjectById(id);
+    }
+
+    
+    function removeObjectById(id) {
+        const index = jsonData.findIndex(obj => obj.id === id);
+        if (index !== -1) {
+            jsonData.splice(index, 1);
+            console.log(`Objekat sa ID-jem ${id} obrisan.`);
+        } else {
+            console.log(`Objekat sa ID-jem ${id} nije pronađen.`);
+        }
+        create_table(data)
+    }
+            
+            
+        
+    
     let headeri = document.querySelectorAll('th')
     headeri.forEach(heder => {
     heder.addEventListener("click", ()=>{
@@ -81,6 +123,12 @@ btn.addEventListener("click", ()=>{
     jsonData.push(newObject);
     create_table(jsonData)
 })
+
+
+
+
+
+
 
 create_table(jsonData)
 
